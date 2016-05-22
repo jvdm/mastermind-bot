@@ -85,16 +85,37 @@ And the bot will reply (to the same channel):
     macacoBOT [6:42 PM] 
     @jvdm: 0 exacts, 6 nears (total guess: 1)
 
-Hints are all lower-case characters from ``a`` to ``g`` (8
+Guesses are all lower-case characters from ``a`` to ``g`` (8
 possibilities, 8**8 combinations).
 
-A reply with `8 exacts` marks you as a winner.  The other players can
-keep playing (the bot will accept their guesses) until they submit the
-correct answer.  If you have already guessed the correct answer or if
-you send a invalid guess (for example, bad characters in the guess and
-so on) the bot only replies with:
+A reply with ``8 exacts`` marks you as a winner.  The other players
+can keep playing (the bot will accept their guesses) until they submit
+the correct answer.  If you have already guessed the correct answer or
+if you send a invalid guess (for example, bad characters in the guess
+and so on) the bot only replies with:
 
     macacoBOT [6:42 PM] 
     @jvdm: bad guess
 
 Yes, that's a ``FIXME``.
+
+
+Asking for a hint
+=================
+
+To ask for a hint just say something to the bot with *hint* followed
+by a game id in the form ``#<id>``, e.g.:
+
+    @macaco please, give a hint for the game #29?
+
+Or:
+
+    @macaco with a hint i certainly can finish the game #29
+
+The bot replies:
+
+    jvdm [6:51 PM] 
+    @macaco: with a hint I can finish #29
+
+    macacoBOT [6:51 PM] 
+    @jvdm: 'd' at position 0
