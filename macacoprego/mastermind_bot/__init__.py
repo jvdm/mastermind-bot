@@ -99,6 +99,10 @@ class MastermindBot(SlackBot):
             return False
         return re.search(r'#(\d+) (\w+)', msg['text'])
             
+    def filter_hint_command(self, msg):
+        return  self.message_is_to_me(msg) \
+            and re.search(r' hint .*#\d+', msg['text'])
+
     async def dispatch_create_command(self, msg):
         players = re.findall(r'<@\w+>', msg['text'].lstrip(self.address_as))
         # The creator is just another player.
@@ -128,6 +132,22 @@ class MastermindBot(SlackBot):
                     '{} exacts, {} nears (total guess: {})'
                     .format(data['exact'], data['near'], data['num_guesses']))
 
+    async def dispatch_hint_command(self, msg):
+        match = re.search(r'#(\d+)', msg['text'])
+        game_id = match.groups()[0]
+        with aiohttp.ClientSession() as session:
+            async with session.post(get_api_url('games/{id}/hint',
+                                                id=game_id),
+                                    data={'name': '<@{}>'.format(msg['user'])}) \
+                    as resp:
+                data = await resp.json()
+                print(data)
+                if resp.status != 200:
+                    return self._reply_to(msg, 'sorry, I could not find a hint!')
+                return self._reply_to(
+                    msg,
+                    "'{}' at position {}".format(data['position'], data['color']))
+    
     async def create_game(self, msg, players):
         log.info('creating game for %s', players)
         with aiohttp.ClientSession() as session:
@@ -157,7 +177,8 @@ class MastermindBot(SlackBot):
 
     MESSAGE_FILTERS = {
         filter_create_command: dispatch_create_command,
-        filter_guess_command: dispatch_guess_command}
+        filter_guess_command: dispatch_guess_command,
+        filter_hint_command: dispatch_hint_command}
 
 
 def parse_args():
