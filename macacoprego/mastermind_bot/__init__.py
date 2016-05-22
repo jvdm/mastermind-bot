@@ -146,7 +146,7 @@ class MastermindBot(SlackBot):
                     return self._reply_to(msg, 'sorry, I could not find a hint!')
                 return self._reply_to(
                     msg,
-                    "'{}' at position {}".format(data['position'], data['color']))
+                    "'{}' at position {}".format(data['color'], data['position']))
     
     async def create_game(self, msg, players):
         log.info('creating game for %s', players)
