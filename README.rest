@@ -3,7 +3,10 @@
 ======================
 
 This is a slack bot providing access to a multiplayer version of the
-`Mastermind <https://en.wikipedia.org/wiki/Mastermind_(board_game)>`_.
+`Mastermind <https://en.wikipedia.org/wiki/Mastermind_(board_game)>`_,
+on top of the APIs provided by `mastermind-backend
+<https://github.com/macacoprego/mastermind-backend>`_ running at
+http://mastermind-macacoprego.herokuapp.com/.
 
 This original game was for two players: One player becomes the
 *codemaker*, the other the *codebreaker*. The codemaker chooses a
