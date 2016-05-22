@@ -1,2 +1,100 @@
-# mastermind-bot
-A mastermind game slack bot
+======================
+ Mastermind Slack Bot
+======================
+
+This is a slack bot providing access to a multiplayer version of the
+`Mastermind <https://en.wikipedia.org/wiki/Mastermind_(board_game)>`_.
+
+This original game was for two players: One player becomes the
+*codemaker*, the other the *codebreaker*. The codemaker chooses a
+pattern of *four* code pegscodebreaker. The codebreaker tries to guess
+the pattern, in both order and color, within twelve (or ten, or eight)
+turns.
+
+This bot mimics the *codemaker* role and supports multiple concurrent
+*codebreakers* for each game.  This is a very simple implementation,
+with minimal interfaces, no authentication and was created during the
+participation of `macacoprego.tech <https://macacoprego.tech>`_ on the
+2016's `vanhackathon <https://www.vanhack.com/hackathon/>`_.
+
+
+==============
+ Installation
+==============
+
+The bot runs in `python3.5 <http://www.python.org/>`_ using `aslack
+<https://github.com/macacoprego/aslack>`_ asynchronous interface to
+slack.  Typically you would run it inside a pyvenv::
+
+  $ git clone https://github.com/macacoprego/mastermind-bot
+  $ mastermind-bot
+  $ mkdir venv
+  $ pyvenv venv/mastermind-bot
+  $ source venv/mastermind-bot/bin/activate
+
+It is distributed with `setuptools`, you only need to install it
+using::
+
+  $ python setup.py install .
+
+And then::
+
+  $ mastermind-bot
+
+It will ask you for the api token, you can also user `--token` or set
+`MACACOPREGO_MASTERMIND_BOT_TOKEN`.
+
+=======
+ Usage
+=======
+
+The bot is currently **very** simple, you can *create games*, *make a
+guess* and *ask for a hint*.
+
+Create games
+============
+
+Send a message to the bot (for the sake of the example, let's call it
+*macaco*):
+
+    @macaco create ... [list of players]
+
+For example:    
+
+    jvdm [6:42 PM] 
+    @macaco: create with @felipenfranco
+
+    macacoBOT [6:42 PM] 
+    @jvdm: sure, give me a second to create a game for you...
+
+    [6:42] 
+    @jvdm: the game #1 has been created, there are 2 players (@jvdm, @felipenfranco), you all may send guesses by sending messages like 'guess #29 <your guess>'.    
+
+Making a guess
+==============
+
+Send a message to the bot like this:
+
+    @macaco guess #<game-id> <guess string>
+
+And the bot will reply (to the same channel):    
+
+    jvdm [6:42 PM] 
+    @macaco: guess #29 abcdefgh
+
+    macacoBOT [6:42 PM] 
+    @jvdm: 0 exacts, 6 nears (total guess: 1)
+
+Hints are all lower-case characters from ``a`` to ``g`` (8
+possibilities, 8**8 combinations).
+
+A reply with `8 exacts` marks you as a winner.  The other players can
+keep playing (the bot will accept their guesses) until they submit the
+correct answer.  If you have already guessed the correct answer or if
+you send a invalid guess (for example, bad characters in the guess and
+so on) the bot only replies with:
+
+    macacoBOT [6:42 PM] 
+    @jvdm: bad guess
+
+Yes, that's a ``FIXME``.
